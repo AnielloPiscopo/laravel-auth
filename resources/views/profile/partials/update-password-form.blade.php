@@ -48,14 +48,7 @@
             <button type="submit" class="my_btn btn btn-primary">{{ __('Save') }}</button>
 
             @if (session('status') === 'password-updated')
-            <script>
-                const show = true;
-                setTimeout(() => show = false, 2000)
-                const el = document.getElementById('status')
-                if (show) {
-                    el.style.display = 'block';
-                }
-            </script>
+            <script src="{{Vite::asset('resources/js/profile/update-password-form.js')}}"></script>
             <p id='status' class=" fs-5 text-muted">{{ __('Saved.') }}</p>
             @endif
         </div>

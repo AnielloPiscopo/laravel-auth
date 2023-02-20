@@ -63,14 +63,7 @@
             <button class="my_btn btn btn-primary" type="submit">{{ __('Save') }}</button>
 
             @if (session('status') === 'profile-updated')
-            <script>
-                const show = true;
-                setTimeout(() => show = false, 2000)
-                const el = document.getElementById('profile-status')
-                if (show) {
-                    el.style.display = 'block';
-                }
-            </script>
+            <script src="{{Vite::asset('resources/js/profile/update-profile-information-form.js')}}"></script>
             <p id='profile-status' class="fs-5 text-muted">{{ __('Saved.') }}</p>
             @endif
         </div>
