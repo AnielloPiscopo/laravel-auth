@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('guest.welcome');
+})->name('guest.welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -26,10 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth' , 'verified'])->name('admin.')->prefix('admin')->group(function(){
-    Route::get('/' , [DashboardController::class , 'index'])->name('dashboard');
+Route::middleware(['auth' , 'verified'])->name('admin.')->prefix('admin/')->group(function(){
+    Route::get('' , [DashboardController::class , 'index'])->name('dashboard');
 
-    Route::prefix('pages')->name('pages.')->group(function () {
+    Route::prefix('')->name('pages.')->group(function () {
         Route::resource('projects',AdminProjectController::class);
     });
 

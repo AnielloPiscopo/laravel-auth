@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use Faker\Generator as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,13 +15,15 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Faker $faker)
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $numOfElements = 100;
+        for($i = 0 ; $i<$numOfElements ; $i++){
+            $newProject = new Project();
+            $newProject->title = $faker->words(5,true);
+            $newProject->slug = Str::of($newProject->title)->slug('-');
+            $newProject->description = $faker->paragraph(10);
+            $newProject->save();
+        }
     }
 }
