@@ -10,7 +10,7 @@
     </header>
 
     <!-- Modal trigger button -->
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-account">
+    <button type="button" class="my_btn btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-account">
         {{__('Delete Account')}}
     </button>
 
@@ -41,7 +41,7 @@
 
                         <div class="input-group">
 
-                            <input id="password" name="password" type="password" class="form-control" placeholder="{{ __('Password') }}" />
+                            <input id="password" name="password" type="password" class="my_form-el form-control" placeholder="{{ __('Password') }}" />
 
                             @error('password')
                             <span class="invalid-feedback mt-2" role="alert">
@@ -51,7 +51,7 @@
 
 
 
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="my_btn btn btn-danger">
                                 {{ __('Delete Account') }}
                             </button>
                             <!--  -->

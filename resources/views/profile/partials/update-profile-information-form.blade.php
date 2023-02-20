@@ -19,7 +19,7 @@
 
         <div class="mb-2">
             <label for="name">{{__('Name')}}</label>
-            <input class="form-control" type="text" name="name" id="name" autocomplete="name" value="{{old('name', $user->name)}}" required autofocus>
+            <input class="my_form-el form-control" type="text" name="name" id="name" autocomplete="name" value="{{old('name', $user->name)}}" required autofocus>
             @error('name')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->get('name')}}</strong>
@@ -32,7 +32,7 @@
                 {{__('Email') }}
             </label>
 
-            <input id="email" name="email" type="email" class="form-control" value="{{ old('email', $user->email)}}" required autocomplete="username" />
+            <input id="email" name="my_form-el email" type="email" class="form-control" value="{{ old('email', $user->email)}}" required autocomplete="username" />
 
             @error('email')
             <span class="alert alert-danger mt-2" role="alert">
@@ -45,7 +45,7 @@
                 <p class="text-sm mt-2 text-muted">
                     {{ __('Your email address is unverified.') }}
 
-                    <button form="send-verification" class="btn btn-outline-dark">
+                    <button form="send-verification" class="my_btn btn btn-outline-dark">
                         {{ __('Click here to re-send the verification email.') }}
                     </button>
                 </p>
@@ -60,7 +60,7 @@
         </div>
 
         <div class="d-flex align-items-center gap-4">
-            <button class="btn btn-primary" type="submit">{{ __('Save') }}</button>
+            <button class="my_btn btn btn-primary" type="submit">{{ __('Save') }}</button>
 
             @if (session('status') === 'profile-updated')
             <script>
