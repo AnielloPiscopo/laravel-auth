@@ -5,9 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
+    protected $rules = [
+        'title' => 'required|string|unique:projects|between:2,255',
+        'description' => 'required|min:10',
+    ];
+
+    protected $messages = [
+        'title.required' => 'Il titolo deve essere inserito obbligatoriamente',
+        'description.min' => 'La descrizione non è abbastanza lunga(min=10 caratteri)',
+        'title.between' => 'Il titolo deve avere un numero di caratteri compreso tra 2 e 255',
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +39,7 @@ class ProjectController extends Controller
     public function create()
     {
         $defaultProject = new Project();
-        return view('admin.pages.projects.create' , compact('defaultComic'));
+        return view('admin.pages.projects.create' , compact('defaultProject'));
     }
 
     /**
@@ -39,7 +50,14 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $formData = $request->validate($this->rules , $this->messages);
+
+        $newProject = new Project();
+
+        $newProject -> fill($formData);
+        $newProject->save();
+
+        return redirect()->route('admin.pages.projects.index')->with('message',"$newProject->title has been created");
     }
 
     /**
@@ -68,12 +86,19 @@ class ProjectController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Project $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $newRules = $this->rules;
+        $newRules['title'] = ['required','string' , 'between:2,255' , Rule::unique('projects')->ignore($project->id)];
+
+        $formData = $request->validate($newRules , $this->messages);
+
+        $project->update($formData);
+
+        return redirect()->route('admin.pages.projects.show',$project->id);
     }
 
     /**
