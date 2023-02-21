@@ -30,6 +30,9 @@
 </head>
 
 <body>
+    <div id="loadOverlay" style="background-color:#333; position:absolute; top:0px; left:0px; width:100vw; height:100vh; z-index:2;">
+    </div>
+    
     <div id="app">
         @include('partials.header')
 
