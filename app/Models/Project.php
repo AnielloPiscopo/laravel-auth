@@ -9,5 +9,10 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = array('title' , 'description' , 'slug');
+    protected $fillable = array('title' , 'slug' , 'description');
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

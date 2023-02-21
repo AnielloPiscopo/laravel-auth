@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
+
 
 class ProjectController extends Controller
 {
@@ -27,7 +29,7 @@ class ProjectController extends Controller
     public function index()
     {
         $numOfElementsToView = 10;
-        $projects = Project::limit($numOfElementsToView)->get();
+        $projects = Project::paginate($numOfElementsToView);
         return view('admin.pages.projects.index' , compact('projects'));
     }
 
@@ -36,10 +38,10 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Project $project)
     {
-        $defaultProject = new Project();
-        return view('admin.pages.projects.create' , compact('defaultProject'));
+        $project['slug'] = Str::of($project['title'])->slug('-');
+        return view('admin.pages.projects.create' , compact('project'));
     }
 
     /**
@@ -55,6 +57,7 @@ class ProjectController extends Controller
         $newProject = new Project();
 
         $newProject -> fill($formData);
+        $newProject['slug'] = Str::of($newProject['title'])->slug('-');
         $newProject->save();
 
         return redirect()->route('admin.pages.projects.index')->with('message',"$newProject->title has been created");
@@ -98,7 +101,7 @@ class ProjectController extends Controller
 
         $project->update($formData);
 
-        return redirect()->route('admin.pages.projects.show',$project->id);
+        return redirect()->route('admin.pages.projects.show',compact('project'));
     }
 
     /**
