@@ -7,7 +7,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
-
+use NumberFormatter;
 
 class ProjectController extends Controller
 {
@@ -114,6 +114,62 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route('admin.pages.projects.index')->with('message' , "$project->title has been deleted");
+        return redirect()->route('admin.pages.projects.index')->with('message' , "$project->title has been moved to the recycled bin");
+    }
+
+    /**
+     * Display a listing of the trashed resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trashed()
+    {
+        $trashedProjects = Project::onlyTrashed()->get();
+        return view('admin.pages.projects.trashed' , compact('trashedProjects'));
+    }
+
+    /**
+     * Restore the trashed resource.
+     * @param  Project $project
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Project $project)
+    {
+        Project::where('id' , $project->id)->withTrashed()->restore();
+        return redirect()->route('admin.pages.projects.index')->with('message' , "$project->title has been restored");
+    }
+
+    /**
+     * Restore all the trashed resources.
+     * @return \Illuminate\Http\Response
+     */
+    public function restoreAll()
+    {
+        Project::onlyTrashed()->restore();
+        $digit = new NumberFormatter("en" , NumberFormatter::SPELLOUT);
+        $numOfRestoredProjects = Project::onlyTrashed()->count();
+        $convertedNumOfRestoredProjects = $digit->format($numOfRestoredProjects);
+        return redirect()->route('admin.pages.projects.index')->with('message' , "$convertedNumOfRestoredProjects elements have been restored");
+    }
+
+    /**
+     * Force delete resource.
+     * @param  Project $project
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete(Project $project)
+    {
+        Project::where('id' , $project->id)->withTrashed()->forceDelete();
+        return redirect()->route('admin.pages.projects.index')->with('message' , "$project->title has been definitely deleted");
+    }
+
+    /**
+     * Force delete all the trashed resources.
+     * @return \Illuminate\Http\Response
+     */
+    public function emptyTrash()
+    {
+        Project::onlyTrashed()->forceDelete();
+        return redirect()->route('admin.pages.projects.index');
     }
 }

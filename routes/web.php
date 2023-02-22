@@ -30,6 +30,11 @@ Route::middleware(['auth' , 'verified'])->name('admin.')->prefix('admin/')->grou
     Route::get('dashboard' , [DashboardController::class , 'index'])->name('dashboard');
 
     Route::prefix('')->name('pages.')->group(function () {
+        Route::get('projects/trashed' , [AdminProjectController::class , 'trashed'])->name('projects.trashed');
+        Route::get('projects/{project}/restore' , [AdminProjectController::class , 'restore'])->name('projects.restore');
+        Route::get('projects/restore' , [AdminProjectController::class , 'restoreAll'])->name('projects.restoreAll');
+        Route::delete('projects/{project}/forceDelete' , [AdminProjectController::class , 'forceDelete'])->name('projects.forceDelete');
+        Route::delete('projects/forceDelete' , [AdminProjectController::class , 'emptyTrash'])->name('projects.emptyTrash');
         Route::resource('projects',AdminProjectController::class);
     });
 
