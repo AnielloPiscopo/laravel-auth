@@ -82,6 +82,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
+        $project['slug'] = Str::slug($project['title']);
         return view('admin.pages.projects.edit' , compact('project'));
     }
 
@@ -99,9 +100,11 @@ class ProjectController extends Controller
 
         $formData = $request->validate($newRules , $this->messages);
 
+        $project['slug'] = Str::slug($project['title']);
         $project->update($formData);
 
-        return redirect()->route('admin.pages.projects.show',compact('project'));
+
+        return redirect()->route('admin.pages.projects.index',compact('project'))->with('message',"$project->title with id $project->id has been modified");
     }
 
     /**
