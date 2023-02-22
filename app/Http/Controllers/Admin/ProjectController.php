@@ -40,7 +40,7 @@ class ProjectController extends Controller
      */
     public function create(Project $project)
     {
-        $project['slug'] = Str::of($project['title'])->slug('-');
+        $project['slug'] = Str::slug($project['title']);
         return view('admin.pages.projects.create' , compact('project'));
     }
 
@@ -57,7 +57,7 @@ class ProjectController extends Controller
         $newProject = new Project();
 
         $newProject -> fill($formData);
-        $newProject['slug'] = Str::of($newProject['title'])->slug('-');
+        $newProject['slug'] = Str::slug($newProject['title']);
         $newProject->save();
 
         return redirect()->route('admin.pages.projects.index')->with('message',"$newProject->title has been created");

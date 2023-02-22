@@ -30,10 +30,6 @@ Route::middleware(['auth' , 'verified'])->name('admin.')->prefix('admin/')->grou
     Route::get('dashboard' , [DashboardController::class , 'index'])->name('dashboard');
 
     Route::prefix('')->name('pages.')->group(function () {
-        Route::get('', function () {
-            return view('admin.pages.home');
-        })->name('home');
-
         Route::resource('projects',AdminProjectController::class);
     });
 
