@@ -16,10 +16,19 @@ $tableElements=[
 
       <div class="col-6">
         <div class="text-end">
-          {{-- @if ($numOfTrashedElements)
-          <a href="{{route('admin.pages.projects.trashed')}}" class="my_btn btn btn-outline-danger" title="{{$numOfTrashedElements>1 ? "$numOfTrashedElements trashed elements" : "1 trashed element"}}">Go to the the recycled bin</a>
-          @endif --}}
-          <a href="{{route('admin.pages.projects.create')}}" class="my_btn btn btn-outline-primary">Add a new project +</a>
+            @if ($projectsRoute === 'index')
+                @if ($numOfTrashedElements)
+                <a href="{{route('admin.pages.projects.trashed')}}" class="my_btn btn btn-outline-danger" title="{{$numOfTrashedElements>1 ? "$numOfTrashedElements trashed elements" : "1 trashed element"}}">Go to the the recycled bin</a>
+                @endif
+                <a href="{{route('admin.pages.projects.create')}}" class="my_btn btn btn-outline-primary">Add a new project +</a>
+            @else
+                <form class="d-inline-block" action="{{route('admin.pages.projects.emptyTrash')}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button class="my_btn btn btn-outline-danger">Delete all</button>
+                </form>
+                <a href="{{route('admin.pages.projects.restoreAll')}}" class="my_btn btn btn-outline-primary">Restore All</a>
+            @endif
         </div>
       </div>
     </div>
@@ -44,7 +53,8 @@ $tableElements=[
               <th scope="row">{{$project->id}}</th>
               <td>{{$project->title}}</td>
               <td>{{$project->description}}</td>
-              <td class="">
+              <td>
+                @if ($projectsRoute === 'index')
                   <a href="{{route('admin.pages.projects.show' , $project->slug)}}" class="my_btn btn btn-primary">Show</a>
                   <a href="{{route('admin.pages.projects.edit' , $project->slug)}}" class="my_btn btn btn-dark">Edit</a>
   
@@ -53,14 +63,22 @@ $tableElements=[
                       @method('DELETE')
                       <button type="submit" class="my_btn btn btn-danger">Delete</button>
                   </form>
+                @else
+                    <form action="{{route('admin.pages.projects.forceDelete' , $project->id)}}" method="POST" >
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="my_btn btn btn-danger">Delete</button>
+                    </form>
+                      <a href="{{route('admin.pages.projects.restore' , $project->id)}}" class="my_btn btn btn-primary">Restore</a>
+                @endif
               </td>
           </tr>
         @endforeach
       </tbody>
     </table>
 
-    {{-- <div class="my_pagination-links d-flex justify-content-end">
+    <div class="my_pagination-links d-flex justify-content-end">
       {{ $projects->links() }}
-    </div> --}}
+    </div>
   </div>
 </section>

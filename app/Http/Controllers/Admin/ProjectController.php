@@ -125,20 +125,20 @@ class ProjectController extends Controller
      */
     public function trashed()
     {
-        // $numOfElementsToView = 10;
-        $trashedProjects = Project::onlyTrashed()->get();
+        $numOfElementsToView = 5;
+        $trashedProjects = Project::onlyTrashed()->paginate($numOfElementsToView);
         return view('admin.pages.projects.trashed' , compact('trashedProjects'));
     }
 
     /**
      * Restore the trashed resource.
-     * @param  Project $project
+     * @param  Int $id
      * @return \Illuminate\Http\Response
      */
-    public function restore(Project $project)
+    public function restore($id)
     {
-        Project::where('id' , $project->id)->withTrashed()->restore();
-        return redirect()->route('admin.pages.projects.index')->with('message' , "$project->title has been restored");
+        Project::where('id' , $id)->withTrashed()->restore();
+        return redirect()->route('admin.pages.projects.index')->with('message' , "The element with id $id has been restored");
     }
 
     /**
@@ -147,22 +147,22 @@ class ProjectController extends Controller
      */
     public function restoreAll()
     {
-        Project::onlyTrashed()->restore();
-        $digit = new NumberFormatter("en" , NumberFormatter::SPELLOUT);
         $numOfRestoredProjects = Project::onlyTrashed()->count();
-        $convertedNumOfRestoredProjects = $digit->format($numOfRestoredProjects);
-        return redirect()->route('admin.pages.projects.index')->with('message' , "$convertedNumOfRestoredProjects elements have been restored");
+        Project::onlyTrashed()->restore();
+        // $digit = new NumberFormatter("en" , NumberFormatter::SPELLOUT);
+        // $convertedNumOfRestoredProjects = $digit->format($numOfRestoredProjects);
+        return redirect()->route('admin.pages.projects.index')->with('message' , "$numOfRestoredProjects elements have been restored");
     }
 
     /**
      * Force delete resource.
-     * @param  Project $project
+     * @param  Int $id
      * @return \Illuminate\Http\Response
      */
-    public function forceDelete(Project $project)
+    public function forceDelete($id)
     {
-        Project::where('id' , $project->id)->withTrashed()->forceDelete();
-        return redirect()->route('admin.pages.projects.index')->with('message' , "$project->title has been definitely deleted");
+        Project::where('id' , $id)->withTrashed()->forceDelete();
+        return redirect()->route('admin.pages.projects.trashed');
     }
 
     /**
@@ -171,7 +171,8 @@ class ProjectController extends Controller
      */
     public function emptyTrash()
     {
+        $numOfDeletedProjects = Project::onlyTrashed()->count();
         Project::onlyTrashed()->forceDelete();
-        return redirect()->route('admin.pages.projects.index');
+        return redirect()->route('admin.pages.projects.index')->with('message' , "$numOfDeletedProjects has been definitely deleted");
     }
 }
