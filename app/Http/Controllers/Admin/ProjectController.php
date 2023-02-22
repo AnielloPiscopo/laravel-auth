@@ -30,7 +30,8 @@ class ProjectController extends Controller
     {
         $numOfElementsToView = 10;
         $projects = Project::paginate($numOfElementsToView);
-        return view('admin.pages.projects.index' , compact('projects'));
+        $numOfTrashedElements = Project::onlyTrashed()->get()->count();
+        return view('admin.pages.projects.index' , compact('projects' , 'numOfTrashedElements'));
     }
 
     /**
