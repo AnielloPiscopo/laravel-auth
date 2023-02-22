@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title' , config('app.name', 'Laravel') . '- Projects')
+
 @section('content')
 @php
 $tableElements=[
@@ -13,6 +15,10 @@ $tableElements=[
 @if (session('message'))
     <span>{{session('message')}}</span>
 @endif
+
+<div class="container d-flex justify-content-end">
+  <a href="{{route('admin.pages.projects.create')}}" class="my_btn btn btn-outline-primary">Add a new project +</a>
+</div>
 
 <table class="table table-hover">
     <thead class="table-dark">
@@ -29,7 +35,7 @@ $tableElements=[
             <th scope="row">{{$project->id}}</th>
             <td>{{$project->title}}</td>
             <td>{{$project->description}}</td>
-            <td>
+            <td class="d-flex">
                 <a href="{{route('admin.pages.projects.show' , $project->slug)}}" class="my_btn btn btn-primary">Show</a>
                 <a href="{{route('admin.pages.projects.edit' , $project->slug)}}" class="my_btn btn btn-dark">Edit</a>
 
