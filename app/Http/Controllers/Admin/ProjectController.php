@@ -125,6 +125,7 @@ class ProjectController extends Controller
      */
     public function trashed()
     {
+        // $numOfElementsToView = 10;
         $trashedProjects = Project::onlyTrashed()->get();
         return view('admin.pages.projects.trashed' , compact('trashedProjects'));
     }
