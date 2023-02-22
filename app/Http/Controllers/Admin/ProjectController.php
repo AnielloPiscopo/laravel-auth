@@ -40,7 +40,6 @@ class ProjectController extends Controller
      */
     public function create(Project $project)
     {
-        $project['slug'] = Str::slug($project['title']);
         return view('admin.pages.projects.create' , compact('project'));
     }
 
@@ -53,11 +52,11 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $formData = $request->validate($this->rules , $this->messages);
+        $formData['slug'] = Str::slug($formData['title']);
 
         $newProject = new Project();
 
         $newProject -> fill($formData);
-        $newProject['slug'] = Str::slug($newProject['title']);
         $newProject->save();
 
         return redirect()->route('admin.pages.projects.index')->with('message',"$newProject->title has been created");
@@ -82,7 +81,6 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        $project['slug'] = Str::slug($project['title']);
         return view('admin.pages.projects.edit' , compact('project'));
     }
 
@@ -99,8 +97,8 @@ class ProjectController extends Controller
         $newRules['title'] = ['required','string' , 'between:2,255' , Rule::unique('projects')->ignore($project->id)];
 
         $formData = $request->validate($newRules , $this->messages);
+        $formData['slug'] = Str::slug($formData['title']);
 
-        $project['slug'] = Str::slug($project['title']);
         $project->update($formData);
 
 
