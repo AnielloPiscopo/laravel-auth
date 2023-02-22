@@ -35,7 +35,7 @@ $tableElements=[
             <th scope="row">{{$project->id}}</th>
             <td>{{$project->title}}</td>
             <td>{{$project->description}}</td>
-            <td class="d-flex">
+            <td>
                 <a href="{{route('admin.pages.projects.show' , $project->slug)}}" class="my_btn btn btn-primary">Show</a>
                 <a href="{{route('admin.pages.projects.edit' , $project->slug)}}" class="my_btn btn btn-dark">Edit</a>
 
