@@ -1,9 +1,8 @@
 @php
 $tableElements=[
-    'Id',
-    'Title',
-    'Description',
-    '#Actions'
+    'id',
+    'title',
+    'description',
 ];    
 @endphp
 
@@ -42,8 +41,9 @@ $tableElements=[
       <thead class="table-dark">
         <tr>
           @foreach ($tableElements as $tableEl)
-              <th scope="col">{{$tableEl}}</th>
+          <th scope="col"><a class="text-decoration-none" href="{{route("admin.pages.projects.index" , "orderCondtion=$tableEl")}}">{{ucfirst($tableEl)}}</a></th>
           @endforeach
+          <th scope="col">#Actions</th>
         </tr>
       </thead>
   
@@ -69,7 +69,7 @@ $tableElements=[
                         @method('DELETE')
                         <button type="submit" class="my_btn btn btn-danger">Delete</button>
                     </form>
-                      <a href="{{route('admin.pages.projects.restore' , $project->id)}}" class="my_btn btn btn-primary">Restore</a>
+                    <a href="{{route('admin.pages.projects.restore' , $project->id)}}" class="my_btn btn btn-primary">Restore</a>
                 @endif
               </td>
           </tr>

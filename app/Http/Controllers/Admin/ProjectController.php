@@ -26,10 +26,16 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $numOfElementsToView = 10;
-        $projects = Project::paginate($numOfElementsToView);
+        $orderCondtion = $request->orderCondtion ?? '';
+        if($orderCondtion){
+            $projects = Project::orderBy($orderCondtion)->paginate($numOfElementsToView);
+        }
+        else{
+            $projects = Project::paginate($numOfElementsToView);
+        }
         $numOfTrashedElements = Project::onlyTrashed()->get()->count();
         return view('admin.pages.projects.index' , compact('projects' , 'numOfTrashedElements'));
     }
