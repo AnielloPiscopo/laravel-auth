@@ -14,6 +14,7 @@ class ProjectController extends Controller
     protected $rules = [
         'title' => 'required|string|unique:projects|between:2,255',
         'description' => 'required|min:10',
+        'slug' => 'required|string|unique:projects|between:2,255',
     ];
 
     protected $messages = [
@@ -102,6 +103,7 @@ class ProjectController extends Controller
     {
         $newRules = $this->rules;
         $newRules['title'] = ['required','string' , 'between:2,255' , Rule::unique('projects')->ignore($project->id)];
+        $newRules['slug'] = ['required','string' , 'between:2,255' , Rule::unique('projects')->ignore($project->id)];
 
         $formData = $request->validate($newRules , $this->messages);
         $formData['slug'] = Str::slug($formData['title']);
