@@ -14,7 +14,16 @@
     <span>{{session('message')}}</span>
 @endif
 
-<article class="my_card">    
+<article class="my_card">
+    <div class="card-image mb-4">
+        @if ( $project->isImageAUrl())
+            <img src="{{ $project->img_path }}"
+        @else
+            <img src="{{ asset('storage/' . $project->img_path ) }}"
+        @endif
+            alt="{{ $project->title }} image" class="img-fluid">
+    </div>
+
     <ul>
         @foreach ($listElements as $listEl)
             <li>{{$listEl . ':' . $project->$listEl}}</li> 

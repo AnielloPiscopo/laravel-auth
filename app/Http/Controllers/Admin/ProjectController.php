@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use NumberFormatter;
@@ -14,13 +15,16 @@ class ProjectController extends Controller
     protected $rules = [
         'title' => 'required|string|unique:projects|between:2,255',
         'description' => 'required|min:10',
-        'slug' => 'required|string|unique:projects|between:2,255',
+        'slug' => 'string|unique:projects|between:2,255',
+        'img_path' => 'required|unique:projects|image|max:300',
     ];
 
     protected $messages = [
         'title.required' => 'Il titolo deve essere inserito obbligatoriamente',
         'description.min' => 'La descrizione non è abbastanza lunga(min=10 caratteri)',
         'title.between' => 'Il titolo deve avere un numero di caratteri compreso tra 2 e 255',
+        'img_path.image' => "Il file inserito deve essere un'immagine",
+        'img_path.max' => "L'immagine non deve superare i 300 kb",
     ];
     /**
      * Display a listing of the resource.
@@ -61,6 +65,7 @@ class ProjectController extends Controller
     {
         $formData = $request->validate($this->rules , $this->messages);
         $formData['slug'] = Str::slug($formData['title']);
+        $formData['img_path'] =  Storage::put('imgs/', $formData['img_path']);
 
         $newProject = new Project();
 
@@ -103,10 +108,20 @@ class ProjectController extends Controller
     {
         $newRules = $this->rules;
         $newRules['title'] = ['required','string' , 'between:2,255' , Rule::unique('projects')->ignore($project->id)];
-        $newRules['slug'] = ['required','string' , 'between:2,255' , Rule::unique('projects')->ignore($project->id)];
+        $newRules['slug'] = ['string' , 'between:2,255' , Rule::unique('projects')->ignore($project->id)];
+        $newRules['img_path'] = ['required','image' , 'max:300' , Rule::unique('projects')->ignore($project->id)];
 
         $formData = $request->validate($newRules , $this->messages);
         $formData['slug'] = Str::slug($formData['title']);
+
+        if ($request->hasFile('img_path')){
+
+            if (!$project->isImageAUrl()){
+                Storage::delete($project->img_path);
+            }
+
+            $formData['img_path'] =  Storage::put('imgs/', $formData['img_path']);
+        }
 
         $project->update($formData);
 

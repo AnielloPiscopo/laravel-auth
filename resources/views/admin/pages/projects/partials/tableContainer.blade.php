@@ -3,6 +3,7 @@ $tableElements=[
     'id',
     'title',
     'description',
+    'img_path',
 ];    
 @endphp
 
@@ -53,6 +54,7 @@ $tableElements=[
               <th scope="row">{{$project->id}}</th>
               <td>{{$project->title}}</td>
               <td>{{$project->description}}</td>
+              <td>{{$project->img_path}}</td>
               <td>
                 @if ($projectsRoute === 'index')
                   <a href="{{route('admin.pages.projects.show' , $project->slug)}}" class="my_btn btn btn-primary">Show</a>

@@ -1,10 +1,11 @@
 @if ($errors->any())
     <div class="alert alert-danger">
       <h3>Check Errors</h3>
+      <span>{{$errors}}</span>
     </div>
 @endif
 
-<form action="{{route($route , $project->slug)}}" method="POST">
+<form action="{{route($route , $project->slug)}}" method="POST" enctype="multipart/form-data">
   @csrf
   @method($formMethod)
 
@@ -15,7 +16,7 @@
     <div class="card-body">
       <div class="form-outline mb-3">
         <label for="title" class="form-label">Title</label>
-        <input class="my_form-el form-control @error('title') is-invalid @enderror" id="title" name="title" aria-describedby="title-errors" placeholder="Insert the title" minlength="2" maxlength="255" value="{{old('title',$project->title)}}">
+        <input type="text" class="my_form-el form-control @error('title') is-invalid @enderror" id="title" name="title" aria-describedby="title-errors" placeholder="Insert the title" minlength="2" maxlength="255" value="{{old('title',$project->title)}}">
         @error('title')
         <div class="form-text invalid-feedback">{{$message}}</div>
         @enderror
@@ -23,8 +24,16 @@
     
       <div class="form-outline mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea class="my_form-el form-control  @error('descripttion') is-invalid @enderror"" id="description" cols="30" rows="10" name="description" aria-describedby="description-errors" minlength="10" placeholder="Insert the description">{{old('description',$project->description)}}</textarea>
+        <textarea class="my_form-el form-control  @error('descripttion') is-invalid @enderror" id="description" cols="30" rows="10" name="description" aria-describedby="description-errors" minlength="10" placeholder="Insert the description">{{old('description',$project->description)}}</textarea>
         @error('description')
+        <div class="form-text invalid-feedback">{{$message}}</div>
+        @enderror
+      </div>
+    
+      <div class="form-outline mb-3">
+        <label for="img_path" class="form-label">Img</label>
+        <input type="file" class="my_form-el form-control @error('img_path') is-invalid @enderror" id="img_path" name="img_path" placeholder="Insert the img" minlength="2" maxlength="255" value="{{old('img_path',$project->img_path)}}">
+        @error('img_path')
         <div class="form-text invalid-feedback">{{$message}}</div>
         @enderror
       </div>
