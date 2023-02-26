@@ -30,7 +30,7 @@ class ProjectController extends Controller
     ];
     /**
      * Display a listing of the resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -164,13 +164,20 @@ class ProjectController extends Controller
 
     /**
      * Display a listing of the trashed resource.
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function trashed()
+    public function trashed(Request $request)
     {
         $numOfElementsToView = 5;
-        $trashedProjects = Project::onlyTrashed()->paginate($numOfElementsToView);
+        $orderCondtion = $request->orderCondtion ?? '';
+        if($orderCondtion){
+            $trashedProjects = Project::onlyTrashed()->orderBy($orderCondtion)->paginate($numOfElementsToView);
+        }
+        else{
+            $trashedProjects = Project::onlyTrashed()->paginate($numOfElementsToView);
+        }
+        // $trashedProjects = Project::onlyTrashed()->paginate($numOfElementsToView);
         return view('admin.pages.projects.trashed' , compact('trashedProjects'));
     }
 
