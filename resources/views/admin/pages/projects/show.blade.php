@@ -1,3 +1,13 @@
+{{-- 
+|--------------------------------------------------------------------------
+| Project show in Admin
+|--------------------------------------------------------------------------
+|
+| This is the show 'Project' section of the website
+| available to the Admin.
+|
+--}}
+
 @extends('layouts.app')
 
 @section('title' , config('app.name', 'Laravel') . '- Projects')
@@ -12,7 +22,12 @@
 
 <article class="my_card">
     <div class="card-image mb-4">
-        <img src="{{$project->isImageAUrl() ? "$project->img_path" : "asset('storage/' . $project->img_path )"}}" alt="{{$project->title}} image" class="img-fluid">
+        @if ( $project->isImageAUrl())
+        <img src="{{ $project->img_path }}"
+        @else
+        <img src="{{ asset("storage/$project->img_path") }}"
+        @endif
+        alt="{{ $project->title }} image" class="img-fluid">
     </div>
 
     <ul>

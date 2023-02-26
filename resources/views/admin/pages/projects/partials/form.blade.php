@@ -1,3 +1,12 @@
+{{-- 
+|--------------------------------------------------------------------------
+| Form blade in Admin projects folder
+|--------------------------------------------------------------------------
+|
+| This is the form used in the create and edit blade file of the projects folder
+|
+--}}
+
 @if ($errors->any())
     <div class="alert alert-danger">
       <h3>Check Errors</h3>

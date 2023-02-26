@@ -1,3 +1,13 @@
+{{-- 
+|--------------------------------------------------------------------------
+| App Layout
+|--------------------------------------------------------------------------
+|
+| This is the main layout that will be used 
+| for the mainly part of website.
+|
+ --}}
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -33,7 +43,7 @@
     <div id="app">
         @include('partials.header')
         
-        <main class="">
+        <main>
             @yield('content')
         </main>
     </div>

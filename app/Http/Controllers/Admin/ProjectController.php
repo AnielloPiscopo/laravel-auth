@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Project Controller in Admin
+|--------------------------------------------------------------------------
+|
+| A controller for the istance Project
+|
+*/
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;

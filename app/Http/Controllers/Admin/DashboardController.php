@@ -1,5 +1,14 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Dashboard Controller
+|--------------------------------------------------------------------------
+|
+| A controller for the Dashboard
+|
+*/
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;

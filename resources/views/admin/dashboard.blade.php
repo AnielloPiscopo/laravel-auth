@@ -1,3 +1,13 @@
+{{--
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+|
+| This is the introductory page of the website
+| available to the Admin.
+|
+--}}
+
 @extends('layouts.app')
 
 @section('content')

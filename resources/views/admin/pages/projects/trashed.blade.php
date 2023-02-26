@@ -1,3 +1,13 @@
+{{-- 
+|--------------------------------------------------------------------------
+| Project trashed in Admin
+|--------------------------------------------------------------------------
+|
+| This is the trashed 'Project' section of the website
+| available to the Admin.
+|
+--}}
+
 @extends('layouts.app')
 
 @section('title' , config('app.name', 'Laravel') . '-  Trashed Projects')

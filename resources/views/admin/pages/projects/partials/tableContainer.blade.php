@@ -1,3 +1,12 @@
+{{-- 
+|--------------------------------------------------------------------------
+| TableContainer blade in Admin projects folder
+|--------------------------------------------------------------------------
+|
+| This is the table partial used in the index and trashed blade file of the projects folder
+|
+--}}
+
 @php
 $tableElements=[
     'id',
