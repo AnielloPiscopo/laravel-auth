@@ -42,7 +42,7 @@ $tableElements=[
       <thead class="table-dark">
         <tr>
           @foreach ($tableElements as $tableEl)
-          <th scope="col"><a class="text-decoration-none" href="{{route("admin.pages.projects.index" , "orderCondtion=$tableEl")}}">{{ucfirst($tableEl)}}</a></th>
+          <th scope="col"><a class="text-decoration-none" href="{{route(($projectsRoute === 'index') ? "admin.pages.projects.index" : "admin.pages.projects.trashed", "orderCondtion=$tableEl")}}">{{ucfirst($tableEl)}}</a></th>
           @endforeach
           <th scope="col">#Actions</th>
         </tr>
