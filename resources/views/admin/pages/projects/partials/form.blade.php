@@ -1,7 +1,6 @@
 @if ($errors->any())
     <div class="alert alert-danger">
       <h3>Check Errors</h3>
-      <span>{{$errors}}</span>
     </div>
 @endif
 

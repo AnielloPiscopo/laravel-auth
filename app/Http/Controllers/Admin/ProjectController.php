@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use Illuminate\Console\View\Components\Confirm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use NumberFormatter;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProjectController extends Controller
 {
@@ -66,13 +68,19 @@ class ProjectController extends Controller
         $formData = $request->validate($this->rules , $this->messages);
         $formData['slug'] = Str::slug($formData['title']);
         $formData['img_path'] =  Storage::put('imgs/', $formData['img_path']);
-
+        
         $newProject = new Project();
-
+        
         $newProject -> fill($formData);
         $newProject->save();
 
-        return redirect()->route('admin.pages.projects.index')->with('message',"$newProject->title has been created");
+        $successMessage = "
+            <div class='my_alert-popup my_success'>
+                <h1 class='fw-bold'>Creazione completata!</h1>
+                <h5 class='my_alert-popup'>L'elemento \"$newProject->title\" è stato creato</h5>
+            </div>";
+
+        return redirect()->route('admin.pages.projects.index')->with("success" , "$successMessage");
     }
 
     /**
@@ -125,8 +133,14 @@ class ProjectController extends Controller
 
         $project->update($formData);
 
+        $successMessage = "
+            <div class='my_alert-popup my_success'>
+                <h1 class='fw-bold'>Congratulazioni!</h3>
+                <h5 class='my_alert-message'>$project->title è stato modificato</h5>
+            </div>";
 
-        return redirect()->route('admin.pages.projects.index',compact('project'))->with('message',"$project->title with id $project->id has been modified");
+
+        return redirect()->route('admin.pages.projects.index',compact('project'))->with('success',"$successMessage");
     }
 
     /**
@@ -138,7 +152,14 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return redirect()->route('admin.pages.projects.index')->with('message' , "$project->title has been moved to the recycled bin");
+        
+        $successMessage = "
+        <div class='my_alert-popup my_success'>
+            <h1 class='fw-bold'>Cestinazione completata!</h1>
+            <h5 class='my_alert-message'>$project->title è stato spostato nel cestino</h5>
+        </div>";
+        
+        return redirect()->route('admin.pages.projects.index')->with('success' , "$successMessage");
     }
 
     /**
@@ -161,7 +182,14 @@ class ProjectController extends Controller
     public function restore($id)
     {
         Project::where('id' , $id)->withTrashed()->restore();
-        return redirect()->route('admin.pages.projects.index')->with('message' , "The element with id $id has been restored");
+
+        $successMessage = "
+        <div class='my-alert-popup my_success'>
+            <h1 class='fw-bold'>Ripristino concluso!</h1>
+            <h5 class='my_alert-message'>L'elemento con id <code>$id</code> è stato ripristinato</h5>
+        </div>";
+
+        return redirect()->route('admin.pages.projects.index')->with('success' , "$successMessage");
     }
 
     /**
@@ -172,9 +200,15 @@ class ProjectController extends Controller
     {
         $numOfRestoredProjects = Project::onlyTrashed()->count();
         Project::onlyTrashed()->restore();
+
+        $successMessage = "
+        <div class='my-alert-popup my_success'>
+            <h1 class='fw-bold'>Ripristino concluso!</h1>
+            <h5 class='my_alert-message'><code>$numOfRestoredProjects</code> elementi sono stati ripristinati</h5>
+        </div>";
         // $digit = new NumberFormatter("en" , NumberFormatter::SPELLOUT);
         // $convertedNumOfRestoredProjects = $digit->format($numOfRestoredProjects);
-        return redirect()->route('admin.pages.projects.index')->with('message' , "$numOfRestoredProjects elements have been restored");
+        return redirect()->route('admin.pages.projects.index')->with('success' , "$successMessage");
     }
 
     /**
@@ -185,7 +219,14 @@ class ProjectController extends Controller
     public function forceDelete($id)
     {
         Project::where('id' , $id)->withTrashed()->forceDelete();
-        return redirect()->route('admin.pages.projects.trashed');
+
+        $successMessage = "
+        <div class='my-alert-popup my_success'>
+            <h1 class='fw-bold'>Eliminazione definitiva conclusa!</h1>
+            <h5 class='my_alert-message'>L'elemento con id <code>$id</code> è stato cancellato definitivamente</h5>
+        </div>";
+
+        return redirect()->route('admin.pages.projects.trashed')->with('success' , "$successMessage");
     }
 
     /**
@@ -196,6 +237,13 @@ class ProjectController extends Controller
     {
         $numOfDeletedProjects = Project::onlyTrashed()->count();
         Project::onlyTrashed()->forceDelete();
-        return redirect()->route('admin.pages.projects.index')->with('message' , "$numOfDeletedProjects has been definitely deleted");
+
+        $successMessage = "
+        <div class='my-alert-popup my_success'>
+            <h1 class='fw-bold'>Eliminazione definitiva conclusa!</h1>
+            <h5 class='my_alert-message'><code>$numOfDeletedProjects</code> elementi sono stati cancellati definitivamente</h5>
+        </div>";
+
+        return redirect()->route('admin.pages.projects.index')->with('success' , "$successMessage");
     }
 }
