@@ -47,7 +47,25 @@
     </div>
 
     <div class="my_btn-container">
-        
+        @if (isset($previousProject))
+            <div class="col-2">
+                <a class="btn btn-outline-primary" href="{{route('admin.pages.projects.show',$previousProject->slug)}}">Previous</a>
+            </div>
+        @else
+            <div class="col-2">
+                <a class="btn btn-outline-secondary disabled" href="">Previous</a>
+            </div>
+        @endif
+
+        @if (isset($nextProject))
+            <div class="col-2">
+                <a class="btn btn-outline-primary" href="{{route('admin.pages.projects.show',$nextProject->slug)}}">Next</a>
+            </div>
+        @else
+            <div class="col-2">
+                <a class="btn btn-outline-secondary disabled" href="">Next</a>
+            </div>
+        @endif
     </div>
 </article>
 @endsection

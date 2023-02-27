@@ -59,6 +59,7 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  Project  $project
      * @return \Illuminate\Http\Response
      */
     public function create(Project $project)
@@ -100,7 +101,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('admin.pages.projects.show',compact('project'));
+        $previousProject = Project::where('id', '<', $project->id)->orderBy('id', 'DESC')->first();
+        $nextProject = Project::where('id', '>', $project->id)->orderBy('id')->first();
+        return view('admin.pages.projects.show',compact('project' , 'previousProject' , 'nextProject'));
     }
 
     /**
